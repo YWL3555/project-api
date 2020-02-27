@@ -22,5 +22,7 @@ urlpatterns = [
     path('api/', include('core.urls')),
     path('api_auth/',include('rest_framework.urls')),
     path('api/token/', TokenObtainPairView.as_view()),
-    path('api/token/refresh/', TokenRefreshView.as_view())
+    path('api/token/refresh/', TokenRefreshView.as_view()),
+    path('auth/', include('djoser.urls')),
+    path('auth/', include('djoser.urls.jwt'))
 ]
