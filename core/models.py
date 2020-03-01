@@ -39,7 +39,7 @@ class Trip(models.Model):
     category = models.CharField(max_length=30)
     duration = models.IntegerField()
     size = models.IntegerField()
-    TourGuide = models.ForeignKey(TourGuide, on_delete=models.CASCADE)
+    tourGuide = models.ForeignKey(TourGuide, on_delete=models.CASCADE)
     languages = ArrayField(models.CharField(max_length=20, blank=True))
     description = models.TextField(max_length=4000)
     photo = models.ImageField(upload_to='photos')

@@ -4,6 +4,7 @@ from django.db import IntegrityError, transaction
 from djoser.conf import settings
 
 from djoser.serializers import UserCreateSerializer as BaseUserRegistrationSerializer
+from core.models import Booking, Trip, TripDate, PrivateBooking, RatingReview
 
 class UserRegistrationSerializer(BaseUserRegistrationSerializer):
     class Meta(BaseUserRegistrationSerializer.Meta):
@@ -38,11 +39,35 @@ class UserSerializer(serializers.ModelSerializer):
 class TourGuideSerializer(serializers.ModelSerializer):
     class Meta:
         model = TourGuide
-        fields = ('user_id', 'name')
+        fields = ('user_id', 'name', 'description', 'email', 'gender', 'contactNumber', 'profilePic', 'languages', 'tourGuideType', 'averageRating', 'totalRating')
 
 
 class StudentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
-        fields = ('user_id', 'name')
+        fields = ('user_id', 'name', 'email', 'gender', 'contactNumber', 'profilePic')
+        
+class TripSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Trip
+        fields = ('title', 'city', 'category', 'duration', 'size', 'tourGuide','languages','description','photo','averageRating','totalRating')
 
+class TripDateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TripDate
+        fields = ('startDate','endDate','availablePax','trip')
+
+class BookingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Booking
+        fields = ('tripDate','student','pax','reviewed','cancelled')
+
+class PrivateBookingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PrivateBooking
+        fields = ('startDate','endDate','details','city','status','pax','student','tourGuide','reviewed','cancelled')
+
+class RatingReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RatingReview
+        fields = ('student','rating','review','trip','tourGuide')
