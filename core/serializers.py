@@ -1,14 +1,16 @@
-from rest_framework import serializers
+from rest_framework import serializers, generics
 from .models import TourGuide, Student, User
 from django.db import IntegrityError, transaction
 from djoser.conf import settings
 
 from djoser.serializers import UserCreateSerializer as BaseUserRegistrationSerializer
 from core.models import Booking, Trip, TripDate, PrivateBooking, RatingReview
+from rest_framework.generics import get_object_or_404
+from django.contrib.auth import authenticate
 
 class UserRegistrationSerializer(BaseUserRegistrationSerializer):
     class Meta(BaseUserRegistrationSerializer.Meta):
-        fields = ('id', 'username', 'name', 'email', 'is_student', 'is_tourGuide', 'password')
+        fields = ('id', 'username', 'name', 'email', 'is_student', 'is_tourGuide', 'password', 'tourGuideType')
 
     def createRole(self, user, validated_data):
         if validated_data['is_student']:
@@ -71,3 +73,16 @@ class RatingReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = RatingReview
         fields = ('student','rating','review','trip','tourGuide')
+
+# class AcceptPrivateBookingSerializer(serializers.ModelSerializer):
+#     """Accept private booking serializer"""
+#     class Meta:
+#         model = PrivateBooking
+
+#     @transaction.atomic
+#     def create(self, validated_data):
+#         privateBookingId = self.context.get('privateBookingId')
+#         acceptedBooking = get_object_or_404(PrivateBooking, id=privateBookingId)
+#         acceptedBooking.status = "Accepted"
+#         return acceptedBooking.save()
+
